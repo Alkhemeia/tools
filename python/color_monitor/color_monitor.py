@@ -725,62 +725,8 @@ class ColorMonitorApp:
         tol_slider.pack(fill="x", pady=(5, 0))
         tol_slider.bind("<ButtonRelease-1>", lambda e: self.save_config())
 
-        # Large Action Trigger Buttons in left column bottom
-        control_frame = ttk.Frame(left_col, style='Card.TFrame')
-        control_frame.pack(fill="x", pady=12)
-        
-        self.start_btn = ttk.Button(control_frame, text="▶️ Überwachung STARTEN", style='Primary.TButton', command=self.toggle_monitoring)
-        self.start_btn.pack(side="left", fill="x", expand=True, ipady=4, padx=(0, 4))
-        
-        self.pause_btn = ttk.Button(control_frame, text="⏸️ Pause", style='Secondary.TButton', command=self.toggle_pause, state="disabled")
-        self.pause_btn.pack(side="left", fill="x", expand=True, ipady=4, padx=(4, 0))
-
-        # --- RIGHT COLUMN WIDGETS ---
-
-        # Automatisierungs-Makro bei Alarm
-        macro_card = ttk.Frame(right_col, style='Card.TFrame', padding=15)
-        macro_card.pack(fill="x", pady=5)
-        
-        self.mac_title = ttk.Label(macro_card, text="Automatisierungs-Makro bei Alarm", font=self.header_font, style='Card.TLabel')
-        self.mac_title.pack(anchor="w", pady=(0, 10))
-        
-        # Listbox with Scrollbar
-        list_frame = ttk.Frame(macro_card, style='Card.TFrame')
-        list_frame.pack(fill="x", pady=(0, 10))
-        
-        self.macro_listbox = tk.Listbox(list_frame, bg="#11111b", fg="#cdd6f4", selectbackground="#313244", 
-                                        font=self.code_font, height=6, relief="flat", highlightthickness=0)
-        self.macro_listbox.pack(side="left", fill="x", expand=True)
-        self.macro_listbox.bind("<Double-Button-1>", self.edit_action)
-        
-        scrollbar = ttk.Scrollbar(list_frame, orient="vertical", command=self.macro_listbox.yview)
-        scrollbar.pack(side="right", fill="y")
-        self.macro_listbox.config(yscrollcommand=scrollbar.set)
-        
-        # Action Edit Buttons underneath the listbox
-        btns_frame = ttk.Frame(macro_card, style='Card.TFrame')
-        btns_frame.pack(fill="x")
-        
-        row1 = ttk.Frame(btns_frame, style='Card.TFrame')
-        row1.pack(fill="x", pady=2)
-        self.btn_add_mac = ttk.Button(row1, text="➕ Hinzufügen", width=12, command=self.add_action)
-        self.btn_add_mac.pack(side="left", padx=(0, 4))
-        self.btn_edit_mac = ttk.Button(row1, text="✏️ Bearbeiten", width=12, command=self.edit_action)
-        self.btn_edit_mac.pack(side="left", padx=4)
-        self.btn_del_mac = ttk.Button(row1, text="❌ Löschen", width=12, command=self.delete_action)
-        self.btn_del_mac.pack(side="left", padx=4)
-        
-        row2 = ttk.Frame(btns_frame, style='Card.TFrame')
-        row2.pack(fill="x", pady=2)
-        self.btn_up_mac = ttk.Button(row2, text="🔼 Hoch", width=8, command=self.move_action_up)
-        self.btn_up_mac.pack(side="left", padx=(0, 4))
-        self.btn_down_mac = ttk.Button(row2, text="🔽 Runter", width=8, command=self.move_action_down)
-        self.btn_down_mac.pack(side="left", padx=4)
-        self.btn_test_mac = ttk.Button(row2, text="▶️ Makro testen", width=16, style='Primary.TButton', command=self.test_macro)
-        self.btn_test_mac.pack(side="left", padx=4)
-
         # Trigger Settings
-        trigger_card = ttk.Frame(right_col, style='Card.TFrame', padding=15)
+        trigger_card = ttk.Frame(left_col, style='Card.TFrame', padding=15)
         trigger_card.pack(fill="x", pady=5)
         
         self.trig_title = ttk.Label(trigger_card, text="Auslöser & Einstellungen", font=self.header_font, style='Card.TLabel')
@@ -845,6 +791,60 @@ class ColorMonitorApp:
         self.zone_active_cb.grid(row=3, column=1, sticky="w", pady=10)
         
         trig_grid.columnconfigure(1, weight=1)
+
+        # Large Action Trigger Buttons in left column bottom
+        control_frame = ttk.Frame(left_col, style='Card.TFrame')
+        control_frame.pack(fill="x", pady=12)
+        
+        self.start_btn = ttk.Button(control_frame, text="▶️ Überwachung STARTEN", style='Primary.TButton', command=self.toggle_monitoring)
+        self.start_btn.pack(side="left", fill="x", expand=True, ipady=4, padx=(0, 4))
+        
+        self.pause_btn = ttk.Button(control_frame, text="⏸️ Pause", style='Secondary.TButton', command=self.toggle_pause, state="disabled")
+        self.pause_btn.pack(side="left", fill="x", expand=True, ipady=4, padx=(4, 0))
+
+        # --- RIGHT COLUMN WIDGETS ---
+
+        # Automatisierungs-Makro bei Alarm
+        macro_card = ttk.Frame(right_col, style='Card.TFrame', padding=15)
+        macro_card.pack(fill="x", pady=5)
+        
+        self.mac_title = ttk.Label(macro_card, text="Automatisierungs-Makro bei Alarm", font=self.header_font, style='Card.TLabel')
+        self.mac_title.pack(anchor="w", pady=(0, 10))
+        
+        # Listbox with Scrollbar
+        list_frame = ttk.Frame(macro_card, style='Card.TFrame')
+        list_frame.pack(fill="x", pady=(0, 10))
+        
+        self.macro_listbox = tk.Listbox(list_frame, bg="#11111b", fg="#cdd6f4", selectbackground="#313244", 
+                                        font=self.code_font, height=6, relief="flat", highlightthickness=0)
+        self.macro_listbox.pack(side="left", fill="x", expand=True)
+        self.macro_listbox.bind("<Double-Button-1>", self.edit_action)
+        
+        scrollbar = ttk.Scrollbar(list_frame, orient="vertical", command=self.macro_listbox.yview)
+        scrollbar.pack(side="right", fill="y")
+        self.macro_listbox.config(yscrollcommand=scrollbar.set)
+        
+        # Action Edit Buttons underneath the listbox
+        btns_frame = ttk.Frame(macro_card, style='Card.TFrame')
+        btns_frame.pack(fill="x")
+        
+        row1 = ttk.Frame(btns_frame, style='Card.TFrame')
+        row1.pack(fill="x", pady=2)
+        self.btn_add_mac = ttk.Button(row1, text="➕ Hinzufügen", width=12, command=self.add_action)
+        self.btn_add_mac.pack(side="left", padx=(0, 4))
+        self.btn_edit_mac = ttk.Button(row1, text="✏️ Bearbeiten", width=12, command=self.edit_action)
+        self.btn_edit_mac.pack(side="left", padx=4)
+        self.btn_del_mac = ttk.Button(row1, text="❌ Löschen", width=12, command=self.delete_action)
+        self.btn_del_mac.pack(side="left", padx=4)
+        
+        row2 = ttk.Frame(btns_frame, style='Card.TFrame')
+        row2.pack(fill="x", pady=2)
+        self.btn_up_mac = ttk.Button(row2, text="🔼 Hoch", width=8, command=self.move_action_up)
+        self.btn_up_mac.pack(side="left", padx=(0, 4))
+        self.btn_down_mac = ttk.Button(row2, text="🔽 Runter", width=8, command=self.move_action_down)
+        self.btn_down_mac.pack(side="left", padx=4)
+        self.btn_test_mac = ttk.Button(row2, text="▶️ Makro testen", width=16, style='Primary.TButton', command=self.test_macro)
+        self.btn_test_mac.pack(side="left", padx=4)
 
         # Überwachungs-Zonen Card
         zones_card = ttk.Frame(right_col, style='Card.TFrame', padding=15)
