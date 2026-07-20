@@ -739,23 +739,9 @@ class ColorMonitorApp:
         outputs_card = ttk.Frame(right_col, style='Card.TFrame', padding=15)
         outputs_card.pack(fill="both", expand=True, pady=5)
         
-        preview_panel = ttk.Frame(outputs_card, style='Card.TFrame')
-        preview_panel.pack(side="left", fill="both", padx=(0, 10))
-        
-        self.lbl_preview = ttk.Label(preview_panel, text="Live-Vorschau", font=self.header_font, style='Card.TLabel')
-        self.lbl_preview.pack(anchor="n", pady=(0, 5))
-        
-        self.preview_canvas = tk.Canvas(preview_panel, width=160, height=160, bg="#181825", highlightthickness=1, highlightbackground="#313244")
-        self.preview_canvas.pack(padx=5, pady=5)
-        
-        self.match_stats_lbl = ttk.Label(preview_panel, text="Übereinstimmung: 0.0%", font=self.body_font, style='Card.TLabel', foreground="#a6adc8")
-        self.match_stats_lbl.pack(pady=2)
-        
-        self.gauge_canvas = tk.Canvas(preview_panel, width=160, height=12, bg="#313244", highlightthickness=0)
-        self.gauge_canvas.pack(pady=5)
-        
+        # Log panel (top)
         log_panel = ttk.Frame(outputs_card, style='Card.TFrame')
-        log_panel.pack(side="left", fill="both", expand=True, padx=(10, 0))
+        log_panel.pack(side="top", fill="both", expand=True, pady=(0, 10))
         
         log_header_frame = ttk.Frame(log_panel, style='Card.TFrame')
         log_header_frame.pack(fill="x", pady=(0, 5))
@@ -773,7 +759,7 @@ class ColorMonitorApp:
         scrollbar_x = ttk.Scrollbar(log_list_frame, orient="horizontal")
         
         self.log_list = tk.Listbox(log_list_frame, bg="#11111b", fg="#cdd6f4", selectbackground="#313244", 
-                                   font=self.code_font, height=10, relief="flat", highlightthickness=0,
+                                   font=self.code_font, height=8, relief="flat", highlightthickness=0,
                                    yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set,
                                    selectmode="extended")
         
@@ -795,6 +781,23 @@ class ColorMonitorApp:
             self.log_context_menu.post(event.x_root, event.y_root)
             
         self.log_list.bind("<Button-3>", show_log_context)
+
+        # Live Preview (bottom)
+        preview_panel = ttk.Frame(outputs_card, style='Card.TFrame')
+        preview_panel.pack(side="bottom", fill="x", pady=(5, 0))
+        
+        self.lbl_preview = ttk.Label(preview_panel, text="Live-Vorschau", font=self.header_font, style='Card.TLabel')
+        self.lbl_preview.pack(anchor="n", pady=(0, 5))
+        
+        self.preview_canvas = tk.Canvas(preview_panel, width=160, height=160, bg="#181825", highlightthickness=1, highlightbackground="#313244")
+        self.preview_canvas.pack(padx=5, pady=5)
+        
+        self.match_stats_lbl = ttk.Label(preview_panel, text="Übereinstimmung: 0.0%", font=self.body_font, style='Card.TLabel', foreground="#a6adc8")
+        self.match_stats_lbl.pack(pady=2)
+        
+        self.gauge_canvas = tk.Canvas(preview_panel, width=160, height=12, bg="#313244", highlightthickness=0)
+        self.gauge_canvas.pack(pady=5)
+
 
 
         # Trigger Settings Card (Merged Target Color, Tolerance, and Trigger settings)
