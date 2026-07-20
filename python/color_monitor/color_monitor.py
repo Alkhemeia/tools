@@ -1921,21 +1921,28 @@ class ColorMonitorApp:
 
     def _action_to_string(self, action):
         a_type = action["type"]
+        desc = ""
         if a_type == "wait":
-            return self.t("act_wait", action['value'])
+            desc = self.t("act_wait", action['value'])
         elif a_type == "click":
             ct = action.get("click_type", "left")
             ct_name = self.t(ct + "_click")
-            return self.t("act_click", ct_name, action['x'], action['y'])
+            desc = self.t("act_click", ct_name, action['x'], action['y'])
         elif a_type == "key_combo":
-            return self.t("act_key_combo", action.get('value', ''))
+            desc = self.t("act_key_combo", action.get('value', ''))
         elif a_type == "type_text":
-            return self.t("act_type_text", action.get('value', ''))
+            desc = self.t("act_type_text", action.get('value', ''))
         elif a_type == "play_sound":
-            return self.t("act_play_sound")
+            desc = self.t("act_play_sound")
         elif a_type == "ntfy":
-            return self.t("act_ntfy", action.get('topic', ''))
-        return self.t("act_unknown")
+            desc = self.t("act_ntfy", action.get('topic', ''))
+        else:
+            desc = self.t("act_unknown")
+            
+        comment = action.get("comment", "").strip()
+        if comment:
+            desc += f"  # {comment}"
+        return desc
 
     def update_macro_listbox(self):
         self.macro_listbox.delete(0, tk.END)

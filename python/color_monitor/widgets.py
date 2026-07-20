@@ -14,7 +14,7 @@ class ActionDialog:
         
         self.win = tk.Toplevel(self.parent)
         self.win.title(self.app.t("action_edit") if action_data else self.app.t("action_add"))
-        self.win.geometry("380x320")
+        self.win.geometry("380x365")
         self.win.resizable(False, False)
         self.win.transient(self.parent)
         self.win.grab_set()
@@ -28,7 +28,7 @@ class ActionDialog:
         pw = self.parent.winfo_width()
         ph = self.parent.winfo_height()
         w = 380
-        h = 320
+        h = 365
         x = px + (pw - w) // 2
         y = py + (ph - h) // 2
         self.win.geometry(f"{w}x{h}+{x}+{y}")
@@ -82,6 +82,21 @@ class ActionDialog:
         self.options_frame = tk.Frame(container, bg=self.bg_card, bd=1, relief="solid", highlightthickness=0)
         self.options_frame.pack(fill="both", expand=True, pady=15, padx=2)
         
+        # Comment Input Frame
+        comment_frame = tk.Frame(container, bg=self.bg_dark)
+        comment_frame.pack(fill="x", side="bottom", pady=(0, 10))
+        
+        lbl_comment = tk.Label(comment_frame, text="Kommentar:", font=("Helvetica", 10), fg=self.fg_light, bg=self.bg_dark)
+        lbl_comment.pack(side="left", padx=(0, 10))
+        
+        self.comment_val = tk.StringVar()
+        if action_data:
+            self.comment_val.set(action_data.get("comment", ""))
+            
+        self.comment_ent = tk.Entry(comment_frame, textvariable=self.comment_val, font=("Helvetica", 10), 
+                                    bg=self.bg_card, fg=self.fg_light, relief="flat", insertbackground=self.fg_light, bd=2)
+        self.comment_ent.pack(side="left", fill="x", expand=True)
+
         # Bottom Buttons
         btn_frame = tk.Frame(container, bg=self.bg_dark)
         btn_frame.pack(fill="x", side="bottom")
@@ -263,15 +278,16 @@ class ActionDialog:
                 a_type = k
                 break
                 
+        action = None
         if a_type == "wait":
             try:
                 val = int(self.wait_ms.get())
                 if val < 0:
                     raise ValueError
-                self.save_callback({"type": "wait", "value": val, "enabled": self.action_enabled.get()})
-                self.close()
+                action = {"type": "wait", "value": val, "enabled": self.action_enabled.get()}
             except ValueError:
                 messagebox.showerror(self.app.t("int_err_title"), self.app.t("int_err_ms"))
+                return
         elif a_type == "click":
             try:
                 x = int(self.click_x.get())
@@ -286,24 +302,21 @@ class ActionDialog:
                     
                 if x < 0 or y < 0:
                     raise ValueError
-                self.save_callback({"type": "click", "x": x, "y": y, "click_type": ct, "enabled": self.action_enabled.get()})
-                self.close()
+                action = {"type": "click", "x": x, "y": y, "click_type": ct, "enabled": self.action_enabled.get()}
             except ValueError:
                 messagebox.showerror(self.app.t("int_err_title"), self.app.t("int_err_xy"))
+                return
         elif a_type == "key_combo":
             val = self.key_combo_val.get().strip()
             if not val:
                 messagebox.showerror(self.app.t("int_err_title"), self.app.t("int_err_key"))
                 return
-            self.save_callback({"type": "key_combo", "value": val, "enabled": self.action_enabled.get()})
-            self.close()
+            action = {"type": "key_combo", "value": val, "enabled": self.action_enabled.get()}
         elif a_type == "type_text":
             val = self.type_text_val.get()
-            self.save_callback({"type": "type_text", "value": val, "enabled": self.action_enabled.get()})
-            self.close()
+            action = {"type": "type_text", "value": val, "enabled": self.action_enabled.get()}
         elif a_type == "play_sound":
-            self.save_callback({"type": "play_sound", "enabled": self.action_enabled.get()})
-            self.close()
+            action = {"type": "play_sound", "enabled": self.action_enabled.get()}
         elif a_type == "ntfy":
             top = self.ntfy_topic.get().strip()
             ttl = self.ntfy_title.get().strip()
@@ -313,13 +326,19 @@ class ActionDialog:
                 messagebox.showerror(self.app.t("int_err_title"), self.app.t("int_err_topic"))
                 return
                 
-            self.save_callback({
+            action = {
                 "type": "ntfy",
                 "topic": top,
                 "title": ttl,
                 "message": msg,
                 "enabled": self.action_enabled.get()
-            })
+            }
+
+        if action:
+            comment = self.comment_val.get().strip()
+            if comment:
+                action["comment"] = comment
+            self.save_callback(action)
             self.close()
 
     def close(self):
