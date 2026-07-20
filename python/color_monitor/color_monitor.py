@@ -14,7 +14,7 @@ import locale
 import urllib.request
 
 from i18n import I18N, MODE_TRANSLATIONS, ACTION_DISPLAY_NAMES
-from controllers import CLICK_TYPE_MAP, CLICK_TYPE_REV, KEY_SYM_MAP, X11MouseController, WindowsMouseController
+from controllers import CLICK_TYPE_MAP, CLICK_TYPE_REV, KEY_SYM_MAP, X11MouseController, WindowsMouseController, RegionSelector, PixelSelector
 from widgets import RegionOverlayBorder, ActionDialog
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
