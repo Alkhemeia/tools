@@ -729,7 +729,7 @@ class ColorMonitorApp:
         card_content.pack(fill="x", expand=True)
         
         card_left = ttk.Frame(card_content, style='Card.TFrame')
-        card_left.pack(side="left", fill="both", expand=True, padx=(0, 15))
+        card_left.pack(side="left", fill="y", padx=(0, 15))
         
         card_right = ttk.Frame(card_content, style='Card.TFrame')
         card_right.pack(side="right", fill="y", padx=(15, 0), anchor="n")
@@ -786,7 +786,7 @@ class ColorMonitorApp:
         
         tol_slider = tk.Scale(tolerance_frame, from_=0, to=255, variable=self.tolerance, orient="horizontal", 
                               bg="#181825", fg="#cdd6f4", highlightthickness=0, troughcolor="#313244", 
-                              activebackground="#89b4fa", showvalue=False, command=self.on_tolerance_change)
+                              activebackground="#89b4fa", showvalue=False, command=self.on_tolerance_change, length=180)
         tol_slider.pack(fill="x", pady=(5, 0))
         tol_slider.bind("<ButtonRelease-1>", lambda e: self.save_config())
         
@@ -819,7 +819,7 @@ class ColorMonitorApp:
         
         interval_slider = tk.Scale(interval_slider_frame, from_=0.1, to=5.0, resolution=0.1, variable=self.interval, orient="horizontal",
                                    bg="#181825", fg="#cdd6f4", highlightthickness=0, troughcolor="#313244", 
-                                   activebackground="#89b4fa", showvalue=False, command=self.on_interval_change, width=12)
+                                   activebackground="#89b4fa", showvalue=False, command=self.on_interval_change, width=12, length=140)
         interval_slider.pack(side="left", fill="x", expand=True)
         interval_slider.bind("<ButtonRelease-1>", lambda e: self.save_config())
         
@@ -835,7 +835,7 @@ class ColorMonitorApp:
         
         self.min_area_slider = tk.Scale(self.min_area_frame, from_=0.0, to=100.0, resolution=0.1, variable=self.min_area_pct, orient="horizontal",
                                         bg="#181825", fg="#cdd6f4", highlightthickness=0, troughcolor="#313244", 
-                                        activebackground="#89b4fa", showvalue=False, command=self.on_min_area_change, width=12)
+                                        activebackground="#89b4fa", showvalue=False, command=self.on_min_area_change, width=12, length=140)
         self.min_area_slider.pack(side="left", fill="x", expand=True)
         self.min_area_slider.bind("<ButtonRelease-1>", lambda e: self.save_config())
         
