@@ -630,8 +630,11 @@ class ColorMonitorApp:
         reg_row = ttk.Frame(region_card, style='Card.TFrame')
         reg_row.pack(fill="x")
         
-        coords_frame = ttk.Frame(reg_row, style='Card.TFrame')
-        coords_frame.pack(side="left", fill="y")
+        reg_left = ttk.Frame(reg_row, style='Card.TFrame')
+        reg_left.pack(side="left", fill="y")
+        
+        coords_frame = ttk.Frame(reg_left, style='Card.TFrame')
+        coords_frame.pack(side="top", anchor="w")
         
         self.entry_x1 = tk.StringVar(value=str(self.x1))
         self.entry_y1 = tk.StringVar(value=str(self.y1))
@@ -655,18 +658,17 @@ class ColorMonitorApp:
                            insertbackground="#cdd6f4", relief="flat", bd=2)
             ent.grid(row=0, column=col+1, padx=2, pady=5)
             
-        self.size_lbl = ttk.Label(reg_row, text="Größe: 100 x 100 px", font=self.body_font, style='Card.TLabel', foreground="#a6adc8")
-        self.size_lbl.pack(side="left", padx=15)
+        self.size_lbl = ttk.Label(reg_left, text="Größe: 100 x 100 px", font=self.body_font, style='Card.TLabel', foreground="#a6adc8")
+        self.size_lbl.pack(side="top", anchor="w", pady=(5, 0))
         
-        # Spacer to push buttons to the right
-        spacer = ttk.Frame(reg_row, style='Card.TFrame')
-        spacer.pack(side="left", fill="x", expand=True)
+        reg_right = ttk.Frame(reg_row, style='Card.TFrame')
+        reg_right.pack(side="right", fill="y", padx=(10, 0))
         
-        self.pixel_btn = ttk.Button(reg_row, text="🎯 Pixel wählen", command=self.start_pixel_selection)
-        self.pixel_btn.pack(side="right", padx=(4, 0))
+        self.pixel_btn = ttk.Button(reg_right, text="🎯 Pixel wählen", command=self.start_pixel_selection, width=20)
+        self.pixel_btn.pack(side="top", fill="x", pady=2)
         
-        self.select_btn = ttk.Button(reg_row, text="🖥️ Bereich markieren", command=self.start_region_selection)
-        self.select_btn.pack(side="right", padx=4)
+        self.select_btn = ttk.Button(reg_right, text="🖥️ Bereich markieren", command=self.start_region_selection, width=20)
+        self.select_btn.pack(side="top", fill="x", pady=2)
 
         # 4. Zonen Card
         zones_card = ttk.Frame(main_col, style='Card.TFrame', padding=15)
@@ -694,21 +696,22 @@ class ColorMonitorApp:
         zones_right = ttk.Frame(zones_content, style='Card.TFrame')
         zones_right.pack(side="right", fill="y", padx=(10, 0))
         
-        # Align buttons inside a 2-row grid on the right side of the listbox
+        # Align buttons inside a 3-row grid (2 columns wide) on the right side of the listbox to save horizontal space
         self.btn_add_zone = ttk.Button(zones_right, text="➕ Hinzufügen", width=12, command=self.add_zone)
-        self.btn_add_zone.grid(row=0, column=0, padx=2, pady=2)
+        self.btn_add_zone.grid(row=0, column=0, padx=2, pady=2, sticky="ew")
         
         self.btn_del_zone = ttk.Button(zones_right, text="❌ Löschen", width=12, command=self.delete_zone)
-        self.btn_del_zone.grid(row=0, column=1, padx=2, pady=2)
+        self.btn_del_zone.grid(row=0, column=1, padx=2, pady=2, sticky="ew")
         
         self.btn_rename_zone = ttk.Button(zones_right, text="✏️ Umbenennen", width=12, command=self.rename_zone)
-        self.btn_rename_zone.grid(row=0, column=2, padx=2, pady=2)
+        self.btn_rename_zone.grid(row=1, column=0, padx=2, pady=2, sticky="ew")
         
         self.btn_zone_up = ttk.Button(zones_right, text="🔼 Nach oben", width=12, command=self.move_zone_up)
-        self.btn_zone_up.grid(row=1, column=0, padx=2, pady=2)
+        self.btn_zone_up.grid(row=1, column=1, padx=2, pady=2, sticky="ew")
         
         self.btn_zone_down = ttk.Button(zones_right, text="🔽 Nach unten", width=12, command=self.move_zone_down)
-        self.btn_zone_down.grid(row=1, column=1, padx=2, pady=2)
+        self.btn_zone_down.grid(row=2, column=0, columnspan=2, padx=2, pady=2, sticky="ew")
+
 
 
         # 5. Trigger Settings Card
