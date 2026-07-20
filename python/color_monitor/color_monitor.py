@@ -862,6 +862,7 @@ class ColorMonitorApp:
                                         font=self.code_font, height=6, relief="flat", highlightthickness=0)
         self.macro_listbox.pack(side="left", fill="x", expand=True)
         self.macro_listbox.bind("<Double-Button-1>", self.edit_action)
+        self.macro_listbox.bind("<space>", self.toggle_action_enabled)
         
         scrollbar = ttk.Scrollbar(list_frame, orient="vertical", command=self.macro_listbox.yview)
         scrollbar.pack(side="right", fill="y")
@@ -874,6 +875,8 @@ class ColorMonitorApp:
         row1.pack(fill="x", pady=2)
         self.btn_add_mac = ttk.Button(row1, text="➕ Hinzufügen", width=12, command=self.add_action)
         self.btn_add_mac.pack(side="left", padx=(0, 4))
+        self.btn_toggle_mac = ttk.Button(row1, text="🔘 Ein/Aus", width=12, command=self.toggle_action_enabled)
+        self.btn_toggle_mac.pack(side="left", padx=4)
         self.btn_edit_mac = ttk.Button(row1, text="✏️ Bearbeiten", width=12, command=self.edit_action)
         self.btn_edit_mac.pack(side="left", padx=4)
         self.btn_del_mac = ttk.Button(row1, text="❌ Löschen", width=12, command=self.delete_action)
@@ -1809,6 +1812,19 @@ class ColorMonitorApp:
         self.update_macro_listbox()
         self.save_config()
         self.profile_modified = True
+
+    def toggle_action_enabled(self, event=None):
+        selected_idx = self.macro_listbox.curselection()
+        if not selected_idx:
+            return "break" if event else None
+        idx = selected_idx[0]
+        action = self.macro_actions[idx]
+        action["enabled"] = not action.get("enabled", True)
+        self.update_macro_listbox()
+        self.macro_listbox.select_set(idx)
+        self.save_config()
+        self.profile_modified = True
+        return "break"
 
     def delete_action(self):
         selected_idx = self.macro_listbox.curselection()
