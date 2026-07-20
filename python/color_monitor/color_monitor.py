@@ -1851,7 +1851,7 @@ class ColorMonitorApp:
             messagebox.showinfo("Info", self.t("action_select_action_first"), parent=self.root)
             return "break" if event else None
         idx = selected_idx[0]
-        ActionDialog(self, lambda act: self.on_action_saved(act, idx), self.macro_actions[idx])
+        self.root.after(50, lambda: ActionDialog(self, lambda act: self.on_action_saved(act, idx), self.macro_actions[idx]))
         return "break" if event else None
 
     def on_action_saved(self, action, idx=None):
