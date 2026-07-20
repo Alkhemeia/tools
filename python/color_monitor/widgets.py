@@ -1,7 +1,8 @@
 import sys
+import time
 import tkinter as tk
 from tkinter import ttk, messagebox
-from controllers import CLICK_TYPE_MAP
+from controllers import CLICK_TYPE_MAP, PositionPicker
 from i18n import ACTION_DISPLAY_NAMES
 
 class ActionDialog:
