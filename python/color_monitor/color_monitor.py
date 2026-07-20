@@ -683,15 +683,22 @@ class ColorMonitorApp:
         zones_left = ttk.Frame(zones_content, style='Card.TFrame')
         zones_left.pack(side="left", fill="both", expand=True, padx=(0, 10))
         
+        scrollbar_y = ttk.Scrollbar(zones_left, orient="vertical")
+        scrollbar_x = ttk.Scrollbar(zones_left, orient="horizontal")
+        
         self.zones_listbox = tk.Listbox(zones_left, bg="#11111b", fg="#cdd6f4", selectbackground="#313244", 
-                                        font=self.code_font, height=5, relief="flat", highlightthickness=0)
+                                        font=self.code_font, height=5, relief="flat", highlightthickness=0,
+                                        yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
+        
+        scrollbar_y.config(command=self.zones_listbox.yview)
+        scrollbar_x.config(command=self.zones_listbox.xview)
+        
+        scrollbar_y.pack(side="right", fill="y")
+        scrollbar_x.pack(side="bottom", fill="x")
         self.zones_listbox.pack(side="left", fill="both", expand=True)
+        
         self.zones_listbox.bind("<<ListboxSelect>>", self.on_zone_selected)
         self.zones_listbox.bind("<Double-Button-1>", self.rename_zone)
-        
-        scrollbar = ttk.Scrollbar(zones_left, orient="vertical", command=self.zones_listbox.yview)
-        scrollbar.pack(side="right", fill="y")
-        self.zones_listbox.config(yscrollcommand=scrollbar.set)
         
         zones_right = ttk.Frame(zones_content, style='Card.TFrame')
         zones_right.pack(side="right", fill="y", padx=(10, 0))
@@ -858,15 +865,22 @@ class ColorMonitorApp:
         list_frame = ttk.Frame(macro_card, style='Card.TFrame')
         list_frame.pack(fill="x", pady=(0, 10))
         
+        scrollbar_y = ttk.Scrollbar(list_frame, orient="vertical")
+        scrollbar_x = ttk.Scrollbar(list_frame, orient="horizontal")
+        
         self.macro_listbox = tk.Listbox(list_frame, bg="#11111b", fg="#cdd6f4", selectbackground="#313244", 
-                                        font=self.code_font, height=6, relief="flat", highlightthickness=0)
-        self.macro_listbox.pack(side="left", fill="x", expand=True)
+                                        font=self.code_font, height=6, relief="flat", highlightthickness=0,
+                                        yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
+        
+        scrollbar_y.config(command=self.macro_listbox.yview)
+        scrollbar_x.config(command=self.macro_listbox.xview)
+        
+        scrollbar_y.pack(side="right", fill="y")
+        scrollbar_x.pack(side="bottom", fill="x")
+        self.macro_listbox.pack(side="left", fill="both", expand=True)
+        
         self.macro_listbox.bind("<Double-Button-1>", self.edit_action)
         self.macro_listbox.bind("<space>", self.toggle_action_enabled)
-        
-        scrollbar = ttk.Scrollbar(list_frame, orient="vertical", command=self.macro_listbox.yview)
-        scrollbar.pack(side="right", fill="y")
-        self.macro_listbox.config(yscrollcommand=scrollbar.set)
         
         btns_frame = ttk.Frame(macro_card, style='Card.TFrame')
         btns_frame.pack(fill="x")
